@@ -16,17 +16,29 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v4
 
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
       - name: Baixar a ISO do jogo
         run: |
           echo "Baixando a ISO..."
           curl -L "${{ github.event.inputs.iso_url }}" -o game_iso.iso
 
-      - name: Configurar ambiente e injetar ISO
+      - name: Instalar dependências e compilar
         run: |
-          # Aqui você roda os comandos do projeto/PadMint apontando para 'game_iso.iso'
-          echo "Processando a ISO e compondo o app..."
-          # ex: python3 build.py --iso game_iso.iso
+          echo "Instalando dependências do projeto..."
+          npm install
+
+          echo "Executando o script de build e inserindo a ISO..."
+          # Se o projeto utilizar algum comando específico de build ou script interno, ajuste aqui:
+          # Exemplo: npm run build -- --iso game_iso.iso
           
+          # Caso o script gere o arquivo em uma pasta de build, garanta que ele seja criado:
+          mkdir -p build_output
+          # (Insira aqui o comando real do repositório bluewake para gerar o .ipa final apontando para 'game_iso.iso')
+
       - name: Salvar o .ipa gerado
         uses: actions/upload-artifact@v4
         with:
