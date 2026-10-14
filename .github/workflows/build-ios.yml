@@ -16,29 +16,19 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v4
 
-      - name: Listar arquivos do repositório
-        run: |
-          echo "Estrutura de pastas raiz:"
-          ls -la
-
       - name: Baixar a ISO do jogo
         run: |
           echo "Baixando a ISO..."
           curl -L "${{ github.event.inputs.iso_url }}" -o game_iso.iso
 
-      - name: Executar build e gerar IPA
+      - name: Procurar scripts de build no projeto
         run: |
-          echo "Preparando ambiente para compilação..."
-          # Se o projeto tiver subpastas, entramos nelas se necessário, ou rodamos o build padrão
-          # Exemplo: python3 -m pip install -r requirements.txt (se for script Python)
-          
-          # Verificando se existe package.json em alguma pasta interna
-          find . -name "package.json"
-          
-          # Adicione o comando correto de build do projeto aqui após testarmos a estrutura
+          echo "Procurando arquivos de compilação ou scripts Python/Shell..."
+          find . -maxdepth 2 -name "*.py" -o -name "*.sh" -o -name "Makefile"
 
-      - name: Salvar o .ipa gerado
+      - name: Salvar o .ipa gerado (Placeholder)
         uses: actions/upload-artifact@v4
         with:
           name: bluewake-custom-ipa
           path: '**/*.ipa'
+          if-no-files-found: ignore
