@@ -16,28 +16,26 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v4
 
-      - name: Configurar Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+      - name: Listar arquivos do repositório
+        run: |
+          echo "Estrutura de pastas raiz:"
+          ls -la
 
       - name: Baixar a ISO do jogo
         run: |
           echo "Baixando a ISO..."
           curl -L "${{ github.event.inputs.iso_url }}" -o game_iso.iso
 
-      - name: Instalar dependências e compilar
+      - name: Executar build e gerar IPA
         run: |
-          echo "Instalando dependências do projeto..."
-          npm install
-
-          echo "Executando o script de build e inserindo a ISO..."
-          # Se o projeto utilizar algum comando específico de build ou script interno, ajuste aqui:
-          # Exemplo: npm run build -- --iso game_iso.iso
+          echo "Preparando ambiente para compilação..."
+          # Se o projeto tiver subpastas, entramos nelas se necessário, ou rodamos o build padrão
+          # Exemplo: python3 -m pip install -r requirements.txt (se for script Python)
           
-          # Caso o script gere o arquivo em uma pasta de build, garanta que ele seja criado:
-          mkdir -p build_output
-          # (Insira aqui o comando real do repositório bluewake para gerar o .ipa final apontando para 'game_iso.iso')
+          # Verificando se existe package.json em alguma pasta interna
+          find . -name "package.json"
+          
+          # Adicione o comando correto de build do projeto aqui após testarmos a estrutura
 
       - name: Salvar o .ipa gerado
         uses: actions/upload-artifact@v4
