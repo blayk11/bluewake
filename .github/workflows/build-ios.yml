@@ -1,0 +1,34 @@
+name: Build iOS App com ISO
+
+on:
+  workflow_dispatch:
+    inputs:
+      iso_url:
+        description: 'URL de download direto da ISO do jogo'
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Baixar a ISO do jogo
+        run: |
+          echo "Baixando a ISO..."
+          curl -L "${{ github.event.inputs.iso_url }}" -o game_iso.iso
+
+      - name: Configurar ambiente e injetar ISO
+        run: |
+          # Aqui você roda os comandos do projeto/PadMint apontando para 'game_iso.iso'
+          echo "Processando a ISO e compilando o app..."
+          # ex: python3 build.py --iso game_iso.iso
+          
+      - name: Salvar o .ipa gerado
+        uses: actions/upload-artifact@v4
+        with:
+          name: bluewake-custom-ipa
+          path: '**/*.ipa'
