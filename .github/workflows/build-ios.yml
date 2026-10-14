@@ -24,10 +24,9 @@ jobs:
       - name: Executar preparação e build com a ISO
         run: |
           echo "Iniciando scripts de preparação..."
-          # Executa o script de preparação do projeto apontando para a ISO baixada
-          python3 scripts/prepare.py --iso game_iso.iso || python3 scripts/prepare.py
+          # Passando o caminho da ISO de forma correta (sem o parâmetro --iso)
+          python3 scripts/prepare.py game_iso.iso
           
-          # Se houver outro passo de compilação necessário, ele rodará aqui
           echo "Procurando arquivos .ipa gerados..."
           find . -name "*.ipa"
 
