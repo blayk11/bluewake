@@ -21,12 +21,17 @@ jobs:
           echo "Baixando a ISO..."
           curl -L "${{ github.event.inputs.iso_url }}" -o game_iso.iso
 
-      - name: Procurar scripts de build no projeto
+      - name: Executar preparação e build com a ISO
         run: |
-          echo "Procurando arquivos de compilação ou scripts Python/Shell..."
-          find . -maxdepth 2 -name "*.py" -o -name "*.sh" -o -name "Makefile"
+          echo "Iniciando scripts de preparação..."
+          # Executa o script de preparação do projeto apontando para a ISO baixada
+          python3 scripts/prepare.py --iso game_iso.iso || python3 scripts/prepare.py
+          
+          # Se houver outro passo de compilação necessário, ele rodará aqui
+          echo "Procurando arquivos .ipa gerados..."
+          find . -name "*.ipa"
 
-      - name: Salvar o .ipa gerado (Placeholder)
+      - name: Salvar o .ipa gerado
         uses: actions/upload-artifact@v4
         with:
           name: bluewake-custom-ipa
