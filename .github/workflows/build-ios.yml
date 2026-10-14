@@ -24,7 +24,7 @@ jobs:
       - name: Configurar ambiente e injetar ISO
         run: |
           # Aqui você roda os comandos do projeto/PadMint apontando para 'game_iso.iso'
-          echo "Processando a ISO e compilando o app..."
+          echo "Processando a ISO e compondo o app..."
           # ex: python3 build.py --iso game_iso.iso
           
       - name: Salvar o .ipa gerado
